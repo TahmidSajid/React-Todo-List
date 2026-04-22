@@ -1,6 +1,6 @@
 import React from "react";
 
-const Task = ({ id, taskName, desc, deleteTask }) => {
+const Task = ({ id, taskName, desc, deleteTask, updateTask }) => {
   return (
     <>
       <div className="card mb-4">
@@ -14,7 +14,7 @@ const Task = ({ id, taskName, desc, deleteTask }) => {
               <button type="button" className="btn btn-danger" onClick={()=>{deleteTask(id)}}>Delete</button>
             </div>
             <div className="col-lg-3">
-              <button type="button" className="btn btn-warning">Update</button>
+              <button type="button" className="btn btn-warning" onClick={()=>{updateTask(id)}}>Update</button>
             </div>
           </div>
         </div>
