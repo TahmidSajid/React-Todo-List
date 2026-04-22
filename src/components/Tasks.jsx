@@ -5,9 +5,9 @@ const Tasks = ({ allTask }) => {
   return (
     <>
       <div className="row mt-4">
-        {allTask.map((task) => {
+        {allTask.map((task,index) => {
           return (
-          <div className="col-lg-4">
+          <div className="col-lg-4" key={index}>
             <Task id={task.id} taskName={task.task} desc={task.description}/>
           </div>
           )

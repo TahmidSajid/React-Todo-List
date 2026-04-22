@@ -1,19 +1,30 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
-import From from "./components/From";
+import Form from "./components/Form";
 import Navbar from "./components/Navbar";
 import { tasks } from "./data";
 import Tasks from "./components/Tasks";
+import { useEffect, useState } from "react";
 
 function App() {
-  const allTask = tasks;  
+  const [allTasks, setAllTasks] = useState([]);
+  const addTask = (task) =>{
+    setAllTasks([
+      ...allTasks,
+      task,
+    ]);
+  }
+
+  useEffect(()=>{
+    setAllTasks(tasks)
+  },[])
 
   return (
     <>
       <div className="container">
         <Navbar />
-        <From />
-        <Tasks allTask ={allTask}/>
+        <Form addTask={addTask}/>
+        <Tasks allTask ={allTasks}/>
       </div>
     </>
   );

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Form } from "react-bootstrap";
+import { v4 as uuid } from "uuid";
 
-const From = () => {
+const Form = ({addTask}) => {
 
     let [taskName, setTaskName] = useState('');
     let [desc, setDesc] = useState('');
@@ -17,8 +17,13 @@ const From = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        console.log(taskName);
-        console.log(desc);
+        addTask({
+          id: uuid(),
+          task : taskName,
+          description : desc,
+        });
+        setTaskName('')
+        setDesc('')
     }
 
     useEffect(()=>{
@@ -42,6 +47,7 @@ const From = () => {
                     onChange={(e)=>{
                         getName(e.target.value);
                     }}
+                    value={taskName}
                   />
                   <label htmlFor="floatingInput">Task Name</label>
                 </div>
@@ -53,6 +59,7 @@ const From = () => {
                     onChange={(e)=>{
                         getDesc(e.target.value);
                     }}
+                    value={desc}
                   ></textarea>
                   <label htmlFor="floatingTextarea2">Description</label>
                 </div>
@@ -68,4 +75,4 @@ const From = () => {
   );
 };
 
-export default From;
+export default Form;
