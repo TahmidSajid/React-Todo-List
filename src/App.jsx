@@ -15,6 +15,11 @@ function App() {
     ]);
   }
 
+  const deleteTask = (id) =>{
+    let tasks = allTasks.filter((task) => task.id != id);
+    setAllTasks(tasks);
+  }
+
   useEffect(()=>{
     setAllTasks(tasks)
   },[])
@@ -23,8 +28,8 @@ function App() {
     <>
       <div className="container">
         <Navbar />
-        <Form addTask={addTask}/>
-        <Tasks allTask ={allTasks}/>
+        <Form addTask={addTask} />
+        <Tasks allTask ={allTasks} deleteTask={deleteTask}/>
       </div>
     </>
   );
