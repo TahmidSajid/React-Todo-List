@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Button, Modal } from "react-bootstrap";
 
-const UpdateForm = ({ show, handleClose, updateTaskObject}) => {
-  let [taskName, setTaskName] = useState('');
-  let [desc, setDesc] = useState('');
+const UpdateForm = ({ show, handleClose, updateTaskObject, updateTask }) => {
+  let [taskName, setTaskName] = useState("");
+  let [desc, setDesc] = useState("");
 
   const getName = (e) => {
     setTaskName(e);
@@ -15,27 +15,32 @@ const UpdateForm = ({ show, handleClose, updateTaskObject}) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(taskName);
-    console.log(desc);
+
+    updateTask({
+      id: updateTaskObject.id,
+      task: taskName,
+      description: desc,
+    });
+
     setTaskName("");
     setDesc("");
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     if (updateTaskObject) {
       setTaskName(updateTaskObject.task || "");
       setDesc(updateTaskObject.description || "");
     }
-  },[updateTaskObject])
+  }, [updateTaskObject]);
 
   return (
     <>
-    <form onSubmit={handleSubmit}>
       <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Update Task</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
+        <form onSubmit={handleSubmit}>
+          <Modal.Header closeButton>
+            <Modal.Title>Update Task</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
             <div className="form-floating mb-3">
               <input
                 type="text"
@@ -61,17 +66,17 @@ const UpdateForm = ({ show, handleClose, updateTaskObject}) => {
               ></textarea>
               <label htmlFor="floatingTextarea2">Description</label>
             </div>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-          <Button type="submit" variant="primary">
-            Save Changes
-          </Button>
-        </Modal.Footer>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleClose}>
+              Close
+            </Button>
+            <Button type="submit" variant="primary">
+              Save Changes
+            </Button>
+          </Modal.Footer>
+        </form>
       </Modal>
-    </form>
     </>
   );
 };

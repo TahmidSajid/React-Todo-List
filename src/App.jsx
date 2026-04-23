@@ -22,10 +22,20 @@ function App() {
     setAllTasks(tasks);
   }
 
-  const updateTask = (id) =>{
+  const editTask = (id) =>{
     let task = allTasks.find((task) => task.id == id);
     setUpdateTaskObject(task);
     setShow(true);
+  }
+
+  const updateTask = (updatedTask) =>{
+    let updatedTasks = allTasks.map((task) => {
+      return task.id === updatedTask.id ? updatedTask : task;
+    })
+
+    setAllTasks(updatedTasks);
+    handleClose();
+
   }
 
   const [show, setShow] = useState(false);
@@ -42,8 +52,8 @@ function App() {
       <div className="container">
         <Navbar />
         <Form addTask={addTask} />
-        <Tasks allTask ={allTasks} deleteTask={deleteTask} updateTask={updateTask}/>
-        <UpdateForm show={show} handleClose={handleClose} updateTaskObject={updateTaskObject}/>
+        <Tasks allTask ={allTasks} deleteTask={deleteTask} editTask={editTask}/>
+        <UpdateForm show={show} handleClose={handleClose} updateTaskObject={updateTaskObject} updateTask={updateTask}/>
       </div>
     </>
   );
