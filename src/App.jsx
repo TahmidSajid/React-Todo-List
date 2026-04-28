@@ -6,9 +6,14 @@ import { tasks } from "./data";
 import Tasks from "./components/Tasks";
 import { useEffect, useState } from "react";
 import UpdateForm from "./components/UpdateForm";
+import api from "./api/axios";
+import { handleSuccess } from "./api/handler";
 
 function App() {
   const [allTasks, setAllTasks] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+
   const [updateTaskObject, setUpdateTaskObject] = useState({});
   const addTask = (task) =>{
     setAllTasks([
@@ -38,12 +43,25 @@ function App() {
 
   }
 
+
+  const fetchTask = async () => {
+    try {
+      let response = await api.get('/task/index');
+      let tasks = handleSuccess(response,true);
+      setAllTasks(tasks);
+      setLoading(false);
+    } catch (error) {
+      console.log('Task Failed Successfully');
+    }
+  }
+
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
   useEffect(()=>{
+    fetchTask();
     setAllTasks(tasks)
   },[])
 
@@ -52,7 +70,7 @@ function App() {
       <div className="container">
         <Navbar />
         <Form addTask={addTask} />
-        <Tasks allTask ={allTasks} deleteTask={deleteTask} editTask={editTask}/>
+        <Tasks allTask ={allTasks} loading={loading} deleteTask={deleteTask} editTask={editTask}/>
         <UpdateForm show={show} handleClose={handleClose} updateTaskObject={updateTaskObject} updateTask={updateTask}/>
       </div>
     </>
