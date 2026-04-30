@@ -4,22 +4,22 @@ import Form from "./components/Form";
 import Navbar from "./components/Navbar";
 import { tasks } from "./data";
 import Tasks from "./components/Tasks";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import UpdateForm from "./components/UpdateForm";
 import api from "./api/axios";
-import { handleSuccess } from "./api/handler";
+import { handleError, handleSuccess } from "./api/handler";
 
 function App() {
   const [allTasks, setAllTasks] = useState([]);
   const [loading, setLoading] = useState(true);
 
 
+  const formRef = useRef(null);
+
   const [updateTaskObject, setUpdateTaskObject] = useState({});
   const addTask = (task) =>{
-    setAllTasks([
-      ...allTasks,
-      task,
-    ]);
+    console.log(task);
+    storeTask(task);
   }
 
   const deleteTask = (id) =>{
@@ -47,11 +47,26 @@ function App() {
   const fetchTask = async () => {
     try {
       let response = await api.get('/task/index');
-      let tasks = handleSuccess(response,true);
+      let tasks = handleSuccess(response,false);
       setAllTasks(tasks);
       setLoading(false);
     } catch (error) {
-      console.log('Task Failed Successfully');
+      setLoading(true);
+      handleError(error,true);
+    }
+  }
+
+  const storeTask = async (task) => {
+    try {
+      let response = await api.post('/task/store',{
+        title: task.task,
+        description: task.description,
+      });
+      handleSuccess(response,true);
+      formRef.current.clearForm();
+      fetchTask();
+    } catch (error) {
+      handleError(error,true);
     }
   }
 
@@ -69,7 +84,7 @@ function App() {
     <>
       <div className="container">
         <Navbar />
-        <Form addTask={addTask} />
+        <Form addTask={addTask} ref={formRef}/>
         <Tasks allTask ={allTasks} loading={loading} deleteTask={deleteTask} editTask={editTask}/>
         <UpdateForm show={show} handleClose={handleClose} updateTaskObject={updateTaskObject} updateTask={updateTask}/>
       </div>

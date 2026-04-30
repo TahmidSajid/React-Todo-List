@@ -33,10 +33,8 @@ export const handleSuccess = (response, showToaster) => {
 export const handleError = (error, showToast = true) => {
     // Laravel validation errors (422)
     if (error.response?.status === 422) {
-        const errors = error.response.data.errors;
-        Object.values(errors).forEach((messages) => {
-            messages.forEach((msg) => toast.error(msg));
-        });
+        const errors = error.response.data.message;
+        errors.forEach((msg) => toast.error(msg));
         return;
     }
 

@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { forwardRef, useEffect, useImperativeHandle, useState } from "react";
 import { v4 as uuid } from "uuid";
 
-const Form = ({addTask}) => {
+const Form = forwardRef(function Form({addTask}, ref){
 
     let [taskName, setTaskName] = useState('');
     let [desc, setDesc] = useState('');
@@ -14,21 +14,22 @@ const Form = ({addTask}) => {
         setDesc(e)
     }
 
-
     const handleSubmit = (e) => {
         e.preventDefault()
         addTask({
-          id: uuid(),
           task : taskName,
           description : desc,
         });
-        setTaskName('')
-        setDesc('')
     }
 
-    useEffect(()=>{
+    useImperativeHandle(ref, () => ({
+        clearForm() {
+            setTaskName('');
+            setDesc('');
+        }
+    }));
 
-    },[taskName,desc])
+
 
   return (
     <>
@@ -73,6 +74,6 @@ const Form = ({addTask}) => {
       </div>
     </>
   );
-};
+});
 
 export default Form;
