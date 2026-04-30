@@ -17,14 +17,19 @@ function App() {
   const formRef = useRef(null);
 
   const [updateTaskObject, setUpdateTaskObject] = useState({});
+  
   const addTask = (task) =>{
-    console.log(task);
     storeTask(task);
   }
 
-  const deleteTask = (id) =>{
-    let tasks = allTasks.filter((task) => task.id != id);
-    setAllTasks(tasks);
+  const deleteTask = async (id) =>{
+    try {
+      let response = await api.delete(`/task/delete?task_id=${id}`);
+      handleSuccess(response,true);
+      fetchTask();
+    } catch (error) {
+      handleError(error,true);
+    }
   }
 
   const editTask = (id) =>{
