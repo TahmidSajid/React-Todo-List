@@ -38,14 +38,21 @@ function App() {
     setShow(true);
   }
 
-  const updateTask = (updatedTask) =>{
-    let updatedTasks = allTasks.map((task) => {
-      return task.id === updatedTask.id ? updatedTask : task;
-    })
-
-    setAllTasks(updatedTasks);
-    handleClose();
-
+  const updateTask = async (updatedTask) =>{
+    console.log(updatedTask);
+    try {
+      let response = await api.put(`/task/update?task_id=${updatedTask.id}`,
+        {
+          title:updatedTask.task,
+          description:updatedTask.description,
+        }
+      );
+      handleSuccess(response,true);
+      fetchTask();
+      handleClose();
+    } catch (error) {
+      handleError(error,false);
+    }
   }
 
 

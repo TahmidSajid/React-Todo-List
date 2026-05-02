@@ -6,6 +6,7 @@ const Tasks = ({ allTask, loading, deleteTask, editTask }) => {
     <>
       <div className="row mt-4">
         {loading ? <h4 className="text-center">Task is loading</h4> : ''}
+        {!allTask.length > 0 ? <h4 className="text-center">Nothing to show yet</h4> : ''}
         {!loading && allTask.map((task,index) => {
           return (
           <div className="col-lg-4" key={index}>

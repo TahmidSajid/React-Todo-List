@@ -22,13 +22,11 @@ const UpdateForm = ({ show, handleClose, updateTaskObject, updateTask }) => {
       description: desc,
     });
 
-    setTaskName("");
-    setDesc("");
   };
 
   useEffect(() => {
     if (updateTaskObject) {
-      setTaskName(updateTaskObject.task || "");
+      setTaskName(updateTaskObject.title || "");
       setDesc(updateTaskObject.description || "");
     }
   }, [updateTaskObject]);
